@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashin.Common.Utils
+namespace Cashin.Infrastructure.Utils
 {
     public class PortugueseIdentityErrorDescriber : IdentityErrorDescriber
     {

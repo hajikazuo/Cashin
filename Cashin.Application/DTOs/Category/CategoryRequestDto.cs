@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Cashin.Common.DTOs.Category
+namespace Cashin.Application.DTOs.Category
 {
     public class CategoryRequestDto
     {

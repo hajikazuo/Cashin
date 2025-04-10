@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cashin.Application\Cashin.Application.csproj" />
     <ProjectReference Include="..\Cashin.Domain\Cashin.Domain.csproj" />
   </ItemGroup>
 

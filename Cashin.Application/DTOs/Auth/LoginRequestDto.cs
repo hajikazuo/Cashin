@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashin.Common.DTOs.Auth
+namespace Cashin.Application.DTOs.Auth
 {
-    public class RegisterRequestDto
+    public class LoginRequestDto
     {
         [EmailAddress(ErrorMessage = "Invalid email.")]
 

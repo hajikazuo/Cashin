@@ -1,7 +1,7 @@
 ﻿using Cashin.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Cashin.Common.DTOs.Transaction
+namespace Cashin.Application.DTOs.Transaction
 {
     public class TransactionRequestDto
     {

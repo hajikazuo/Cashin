@@ -1,4 +1,4 @@
-﻿namespace Cashin.Common.DTOs.Auth
+﻿namespace Cashin.Application.DTOs.Auth
 {
     public class TokenResultDto
     {

@@ -1,26 +1,22 @@
-﻿using Cashin.Common.Context;
-using Cashin.Domain.Entities.Users;
+﻿using Cashin.Domain.Entities.Users;
 using Cashin.Domain.Interfaces.Services;
+using Cashin.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 
-namespace Cashin.Common.Services
+namespace Cashin.Infrastructure.Services
 {
     public class SeedService : ISeedService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly CashinContext _context;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<Role> roleManager;
 
         private const string ClientRole = "Client";
         private const string AdminRole = "Admin";
 
-        private Guid CategoryId = new Guid("a2ee5dde-6af8-42b1-8faf-11d58b01e258");
-
-        public SeedService(UserManager<User> userManager, RoleManager<Role> roleManager, CashinContext context)
+        public SeedService(UserManager<User> userManager, RoleManager<Role> roleManager)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public void Seed()
@@ -32,20 +28,20 @@ namespace Cashin.Common.Services
 
         private async Task<IdentityResult> CreateRole(string roleName)
         {
-            if (!await _roleManager.RoleExistsAsync(roleName))
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
                 var role = new Role
                 {
                     Name = roleName
                 };
-                return await _roleManager.CreateAsync(role);
+                return await roleManager.CreateAsync(role);
             }
             return default;
         }
 
         private async Task<IdentityResult> CreateUser(string email, string name, string password, IEnumerable<string> roles)
         {
-            var request = await _userManager.FindByEmailAsync(email);
+            var request = await userManager.FindByEmailAsync(email);
             if (request == null)
             {
                 var user = new User
@@ -55,11 +51,11 @@ namespace Cashin.Common.Services
                     EmailConfirmed = true,
                 };
 
-                IdentityResult result = await _userManager.CreateAsync(user, password);
+                IdentityResult result = await userManager.CreateAsync(user, password);
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRolesAsync(user, roles);
+                    await userManager.AddToRolesAsync(user, roles);
                 }
 
                 return result;

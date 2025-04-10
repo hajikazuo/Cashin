@@ -1,21 +1,21 @@
-﻿using Cashin.Common.DTOs.Auth;
-using Cashin.Common.Interfaces;
+﻿using Cashin.Application.DTOs.Auth;
 using Cashin.Domain.Entities.Users;
+using Cashin.Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Cashin.Common.Services
+namespace Cashin.Infrastructure.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration configuration;
 
         public TokenService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            this.configuration = configuration;
         }
 
         public TokenResultDto CreateJwtToken(User user, IList<string> roles)
@@ -27,13 +27,13 @@ namespace Cashin.Common.Services
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expiration = DateTime.UtcNow.AddHours(2);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Audience"],
                 claims: claims,
                 expires: expiration,
                 signingCredentials: credentials);

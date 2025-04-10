@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashin.Common.Context
+namespace Cashin.Infrastructure.Context
 {
     public class CashinContext : IdentityDbContext<User, Role, Guid>
     {

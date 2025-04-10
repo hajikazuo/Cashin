@@ -1,40 +1,42 @@
-﻿using Cashin.Common.DTOs.Auth;
-using Cashin.Common.Interfaces;
+﻿using Cashin.Application.DTOs.Auth;
 using Cashin.Domain.Entities.Users;
+using Cashin.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RT.Comb;
 
 namespace Cashin.API.Controllers
 {
-    [Route("api/[action]/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly ITokenService _tokenRepository;
+        private readonly UserManager<User> userManager;
+        private readonly ITokenService tokenRepository;
+        private readonly ICombProvider comb;
 
-        public AuthController(UserManager<User> userManager, ITokenService tokenRepository)
+        public AuthController(UserManager<User> userManager, ITokenService tokenRepository, ICombProvider comb)
         {
-            _userManager = userManager;
-            _tokenRepository = tokenRepository;
+            this.userManager = userManager;
+            this.tokenRepository = tokenRepository;
+            this.comb = comb;
         }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
-            var identityUser = await _userManager.FindByEmailAsync(request.Email);
+            var identityUser = await userManager.FindByEmailAsync(request.Email);
 
             if (identityUser is not null)
             {
-                var checkPasswordResult = await _userManager.CheckPasswordAsync(identityUser, request.Password);
+                var checkPasswordResult = await userManager.CheckPasswordAsync(identityUser, request.Password);
 
                 if (checkPasswordResult)
                 {
-                    var roles = await _userManager.GetRolesAsync(identityUser);
+                    var roles = await userManager.GetRolesAsync(identityUser);
 
-                    var jwtToken = _tokenRepository.CreateJwtToken(identityUser, roles.ToList());
+                    var jwtToken = tokenRepository.CreateJwtToken(identityUser, roles.ToList());
                     var response = new LoginResponseDto()
                     {
                         Email = identityUser.Email,
@@ -56,15 +58,16 @@ namespace Cashin.API.Controllers
         {
             var user = new User
             {
+                Id = comb.Create(),
                 UserName = request.Email?.Trim(),
                 Email = request.Email?.Trim()
             };
 
-            var identityResult = await _userManager.CreateAsync(user, request.Password);
+            var identityResult = await userManager.CreateAsync(user, request.Password);
 
             if (identityResult.Succeeded)
             {
-                identityResult = await _userManager.AddToRoleAsync(user, "Client");
+                identityResult = await userManager.AddToRoleAsync(user, "Client");
 
                 if (identityResult.Succeeded)
                 {

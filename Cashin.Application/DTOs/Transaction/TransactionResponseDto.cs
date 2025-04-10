@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cashin.Common.DTOs.Transaction
+namespace Cashin.Application.DTOs.Transaction
 {
     public class TransactionResponseDto
     {

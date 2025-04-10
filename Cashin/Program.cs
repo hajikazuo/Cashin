@@ -1,10 +1,14 @@
-using Cashin.Common.Context;
-using Cashin.Common.Interfaces;
-using Cashin.Common.Mappings;
-using Cashin.Common.Services;
-using Cashin.Common.Utils;
+using Cashin.Application.Mappings;
+using Cashin.Application.Services;
+using Cashin.Application.Services.Interfaces;
 using Cashin.Domain.Entities.Users;
+using Cashin.Domain.Interfaces.Repositories;
 using Cashin.Domain.Interfaces.Services;
+using Cashin.Infrastructure.Context;
+using Cashin.Infrastructure.Repositories;
+using Cashin.Infrastructure.Services;
+using Cashin.Infrastructure.Services.Interfaces;
+using Cashin.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,8 +67,16 @@ builder.Services.AddDbContext<CashinContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
+
+builder.Services.AddScoped<IApplicationCategoryService, ApplicationCategoryService>();
+builder.Services.AddScoped<IApplicationTransactionService, ApplicationTransactionService>();
 
 builder.Services.AddAutoMapper(typeof(EntitiesToDTOMappingProfile));
 builder.Services.AddSingleton(RT.Comb.Provider.Sql);

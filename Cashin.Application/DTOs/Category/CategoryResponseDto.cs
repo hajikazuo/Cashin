@@ -1,8 +1,8 @@
-﻿namespace Cashin.Common.DTOs.Category
+﻿namespace Cashin.Application.DTOs.Category
 {
     public class CategoryResponseDto
     {
-        public Guid CategoryId { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
     }
 
