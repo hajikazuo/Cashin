@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Cashin.Domain.Entities
 {
-    public class Category : Base
+    public class Base
     {
-        [MaxLength(200)]
-        [Required]
-        public string Name { get; set; }
+        public Guid Id { get; set; }
     }
 }
