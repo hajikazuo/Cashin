@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cashin.Application.DTOs.Auth
 {
-    public class LoginResponseDto
+    public class SignInResponseDto
     {
         public string Email { get; set; }
         public string Token { get; set; }

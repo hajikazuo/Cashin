@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Cashin.Application.DTOs.Auth
 {
-    public class LoginRequestDto
+    public class SignInRequestDto
     {
-        [EmailAddress(ErrorMessage = "Invalid email.")]
+        [EmailAddress(ErrorMessage = "Email inválido.")]
 
         public string Email { get; set; }
         public string Password { get; set; }
