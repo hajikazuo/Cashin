@@ -70,13 +70,11 @@ builder.Services.AddDbContext<CashinContext>(options =>
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 
-builder.Services.AddScoped<IApplicationCategoryService, ApplicationCategoryService>();
-builder.Services.AddScoped<IApplicationTransactionService, ApplicationTransactionService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddAutoMapper(typeof(EntitiesToDTOMappingProfile));
 builder.Services.AddSingleton(RT.Comb.Provider.Sql);

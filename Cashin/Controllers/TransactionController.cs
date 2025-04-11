@@ -1,17 +1,18 @@
 ﻿using Cashin.Application.DTOs.Category;
+using Cashin.Application.DTOs.Transaction;
 using Cashin.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cashin.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class TransactionController : ControllerBase
     {
-        private readonly ICategoryService service;
+        private readonly ITransactionService service;
 
-        public CategoryController(ICategoryService service)
+        public TransactionController(ITransactionService service)
         {
             this.service = service;
         }
@@ -25,24 +26,24 @@ namespace Cashin.API.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var category = await service.GetById(id);
-            if (category == null)
+            var transaction = await service.GetById(id);
+            if (transaction == null)
             {
                 return NotFound();
             }
-            return Ok(category);
+            return Ok(transaction);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CategoryRequestDto categoryDto)
+        public async Task<IActionResult> Add([FromBody] TransactionRequestDto transactionDto)
         {
             try
             {
-                if (categoryDto == null)
+                if (transactionDto == null)
                 {
-                    return BadRequest("Categoria não pode ser vazia");
+                    return BadRequest("Transação não pode ser vazia");
                 }
-                await service.Add(categoryDto);
+                await service.Add(transactionDto);
                 return Ok("Cadastrado com sucesso");
             }
             catch (Exception ex)
@@ -52,16 +53,16 @@ namespace Cashin.API.Controllers
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CategoryRequestDto categoryDto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] TransactionRequestDto transactionDto)
         {
             try
             {
-                if (categoryDto == null)
+                if (transactionDto == null)
                 {
-                    return BadRequest("Categoria não pode ser vazia");
+                    return BadRequest("Transação não pode ser vazia");
                 }
 
-                await service.Update(id, categoryDto);
+                await service.Update(id, transactionDto);
                 return Ok("Alterado com sucesso");
             }
             catch (Exception ex)

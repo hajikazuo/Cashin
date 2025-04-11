@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Cashin.Application.Services.Interfaces
 {
-    public interface IApplicationTransactionService
+    public interface ITransactionService
     {
         Task<IEnumerable<TransactionResponseDto>> GetAll();
         Task<TransactionResponseDto> GetById(Guid id);
         Task Add(TransactionRequestDto transactionDto);
-        Task Update(TransactionRequestDto transactionDto);
-        Task Remove(TransactionRequestDto transactionDto);
+        Task Update(Guid id, TransactionRequestDto transactionDto);
+        Task Remove(Guid id);
     }
 }

@@ -2,33 +2,34 @@
 using Cashin.Application.DTOs.Category;
 using Cashin.Application.Services.Interfaces;
 using Cashin.Domain.Entities;
+using Cashin.Domain.Interfaces.Repositories;
 using Cashin.Domain.Interfaces.Services;
 using RT.Comb;
 
 namespace Cashin.Application.Services
 {
-    public class ApplicationCategoryService : IApplicationCategoryService
+    public class CategoryService : ICategoryService
     {
-        private readonly ICategoryService categoryService;
+        private readonly ICategoryRepository repository;
         private readonly IMapper mapper;
         private readonly ICombProvider comb;
 
-        public ApplicationCategoryService(ICategoryService categoryService, IMapper mapper, ICombProvider comb)
+        public CategoryService(ICategoryRepository repository, IMapper mapper, ICombProvider comb)
         {
-            this.categoryService = categoryService;
+            this.repository = repository;
             this.mapper = mapper;
             this.comb = comb;
         }
 
         public async Task<IEnumerable<CategoryResponseDto>> GetAll()
         {
-            var categories = await categoryService.GetAll();
+            var categories = await repository.GetAll();
             return mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
 
         public async Task<CategoryResponseDto> GetById(Guid id)
         {
-            var category = await categoryService.GetById(id);
+            var category = await repository.GetById(id);
             return mapper.Map<CategoryResponseDto>(category);
         }
 
@@ -36,19 +37,20 @@ namespace Cashin.Application.Services
         {
             var category = mapper.Map<Category>(categoryDto);
             category.Id = comb.Create();
-            await categoryService.Add(category);
+            await repository.Add(category);
         }
 
-        public async Task Update(CategoryUpdateDto categoryDto)
+        public async Task Update(Guid id, CategoryRequestDto categoryDto)
         {
             var category = mapper.Map<Category>(categoryDto);
-            await categoryService.Update(category);
+            category.Id = id;
+            await repository.Update(category);
         }
 
         public async Task Remove(Guid id)
         {
-            var category = await categoryService.GetById(id);
-            await categoryService.Remove(category);
+            var category = await repository.GetById(id);
+            await repository.Remove(category);
         }
     }
 }

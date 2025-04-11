@@ -17,7 +17,6 @@ namespace Cashin.Application.Mappings
         {
             CreateMap<Category, CategoryResponseDto>().ReverseMap();
             CreateMap<CategoryRequestDto, Category>().ReverseMap();
-            CreateMap<CategoryUpdateDto, Category>().ReverseMap();
 
             CreateMap<Transaction, TransactionResponseDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : string.Empty))
