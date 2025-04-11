@@ -1,4 +1,5 @@
 ﻿using Cashin.Domain.Entities;
+using Cashin.Domain.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,8 @@ namespace Cashin.Domain.Interfaces.Repositories
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
+        Task<PagedList<Category>> GetAll(int pageNumber, int pageSize);
+
+        Task<Category?> GetById(Guid id);
     }
 }

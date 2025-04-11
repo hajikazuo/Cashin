@@ -1,4 +1,5 @@
 ﻿using Cashin.Application.DTOs.Category;
+using Cashin.Domain.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Cashin.Application.Services.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryResponseDto>> GetAll();
+        Task<PagedList<CategoryResponseDto>> GetAll(int pageNumber, int pageSize);
         Task<CategoryResponseDto> GetById(Guid id);
         Task Add(CategoryRequestDto categoryDto);
         Task Update(Guid id, CategoryRequestDto categoryDto);

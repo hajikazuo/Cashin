@@ -13,18 +13,6 @@ namespace Cashin.Infrastructure.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
-        {
-            return await context.Set<TEntity>()
-                        .AsNoTracking()
-                        .ToListAsync();
-        }
-
-        public async Task<TEntity> GetById(Guid id)
-        {
-            return await context.Set<TEntity>().FindAsync(id);
-        }
-
         public async Task Add(TEntity obj)
         {
             try

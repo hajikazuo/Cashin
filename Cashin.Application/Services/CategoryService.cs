@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Cashin.Application.DTOs.Category;
+using Cashin.Application.DTOs.Transaction;
 using Cashin.Application.Services.Interfaces;
 using Cashin.Domain.Entities;
 using Cashin.Domain.Interfaces.Repositories;
 using Cashin.Domain.Interfaces.Services;
+using Cashin.Domain.Pagination;
 using RT.Comb;
 
 namespace Cashin.Application.Services
@@ -21,10 +23,11 @@ namespace Cashin.Application.Services
             this.comb = comb;
         }
 
-        public async Task<IEnumerable<CategoryResponseDto>> GetAll()
+        public async Task<PagedList<CategoryResponseDto>> GetAll(int pageNumber, int pageSize)
         {
-            var categories = await repository.GetAll();
-            return mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
+            var categories = await repository.GetAll(pageNumber, pageSize);
+            var categoriesDto = mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
+            return new PagedList<CategoryResponseDto>(pageNumber, pageSize, categories.TotalCount, categoriesDto);
         }
 
         public async Task<CategoryResponseDto> GetById(Guid id)

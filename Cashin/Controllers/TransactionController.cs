@@ -1,7 +1,7 @@
-﻿using Cashin.Application.DTOs.Category;
+﻿using Cashin.API.Extensions;
 using Cashin.Application.DTOs.Transaction;
 using Cashin.Application.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Cashin.Infrastructure.Helpers.Pagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cashin.API.Controllers
@@ -18,9 +18,11 @@ namespace Cashin.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PaginationParams paginationParams)
         {
-            return Ok(await service.GetAll());
+            var transactions = await service.GetAll(paginationParams.PageNumber, paginationParams.PageSize);
+            Response.AddPaginationHeader(new PaginationHeader(paginationParams.PageNumber, paginationParams.PageSize, transactions.TotalCount, transactions.TotalPages));
+            return Ok(transactions);
         }
 
         [HttpGet("{id:Guid}")]

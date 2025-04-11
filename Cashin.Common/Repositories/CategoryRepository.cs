@@ -1,6 +1,9 @@
 ﻿using Cashin.Domain.Entities;
 using Cashin.Domain.Interfaces.Repositories;
+using Cashin.Domain.Pagination;
 using Cashin.Infrastructure.Context;
+using Cashin.Infrastructure.Helpers.Pagination;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +20,17 @@ namespace Cashin.Infrastructure.Repositories
             : base(context)
         {
             this.context = context;
+        }
+
+        public async Task<PagedList<Category>> GetAll(int pageNumber, int pageSize)
+        {
+            var query = context.Set<Category>().AsNoTracking();
+            return await PaginationHelper.CreateAsync(query, pageNumber, pageSize);
+        }
+
+        public async Task<Category?> GetById(Guid id)
+        {
+            return await context.Set<Category>().FindAsync(id);
         }
     }
 }

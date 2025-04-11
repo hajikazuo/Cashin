@@ -3,6 +3,7 @@ using Cashin.Application.DTOs.Transaction;
 using Cashin.Application.Services.Interfaces;
 using Cashin.Domain.Entities;
 using Cashin.Domain.Interfaces.Repositories;
+using Cashin.Domain.Pagination;
 using RT.Comb;
 
 namespace Cashin.Application.Services
@@ -20,10 +21,11 @@ namespace Cashin.Application.Services
             this.comb = comb;
         }
 
-        public async Task<IEnumerable<TransactionResponseDto>> GetAll()
+        public async Task<PagedList<TransactionResponseDto>> GetAll(int pageNumber, int pageSize)
         {
-            var transactions = await repository.GetAll();
-            return mapper.Map<IEnumerable<TransactionResponseDto>>(transactions);
+            var transactions = await repository.GetAll(pageNumber, pageSize);
+            var transactionsDto = mapper.Map<IEnumerable<TransactionResponseDto>>(transactions);
+            return new PagedList<TransactionResponseDto>(pageNumber, pageSize, transactions.TotalCount, transactionsDto);
         }
 
         public async Task<TransactionResponseDto> GetById(Guid id)
