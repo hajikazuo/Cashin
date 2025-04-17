@@ -3,7 +3,7 @@ services:
     image: ${DOCKER_REGISTRY-}cashinapi
     build:
       context: .
-      dockerfile: Cashin/Dockerfile
+      dockerfile: Backend/Cashin/Dockerfile
     depends_on:
       - sqlserver
     environment:
