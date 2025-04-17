@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
-  Alert,
   Box,
   Button,
   Container,
@@ -10,6 +9,7 @@ import {
   Typography
 } from "@mui/material";
 import { useAuth } from "../../hooks/auth";
+import AutoDismissAlert from "../../components/layout/Alert";
 
 type Props = {
   type: 'signin' | 'signup'
@@ -71,9 +71,10 @@ export const Auth = ({ type }: Props) => {
           </Typography>
 
           {showAlert.show && (
-            <Alert severity={showAlert.type} sx={{ mt: 2, mb: 2 }}>
-              {showAlert.message}
-            </Alert>
+            <AutoDismissAlert
+              type={showAlert.type}
+              message={showAlert.message}
+            />
           )}
 
           <Box component="form" sx={{ mt: 2 }}>

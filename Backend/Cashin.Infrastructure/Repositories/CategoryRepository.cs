@@ -22,12 +22,12 @@ namespace Cashin.Infrastructure.Repositories
             this.context = context;
         }
 
-        public async Task<PagedList<Category>> GetAll(Guid userId, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Category>> GetAll(Guid userId)
         {
-            var query = context.Set<Category>()
+            return await context.Set<Category>()
                 .Where(t => t.UserId == null || t.UserId == userId)
-                .AsNoTracking();
-            return await PaginationHelper.CreateAsync(query, pageNumber, pageSize);
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<Category?> GetById(Guid id)

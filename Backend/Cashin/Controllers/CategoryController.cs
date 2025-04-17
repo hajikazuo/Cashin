@@ -22,12 +22,11 @@ namespace Cashin.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationParams paginationParams)
+        public async Task<IActionResult> GetAll()
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var categories = await service.GetAll(userId, paginationParams.PageNumber, paginationParams.PageSize);
-            Response.AddPaginationHeader(new PaginationHeader(paginationParams.PageNumber, paginationParams.PageSize, categories.TotalCount, categories.TotalPages));
+            var categories = await service.GetAll(userId);
             return Ok(categories);
         }
 

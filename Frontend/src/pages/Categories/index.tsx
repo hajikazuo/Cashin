@@ -9,26 +9,23 @@ import {
     TableRow,
     Paper,
     Box,
-    Alert,
+    Typography,
 } from "@mui/material";
 import Breadcrumb from "../../components/layout/Breadcrumb";
-import CustomPagination from "../../components/layout/Pagination";
 import LoadingSpinner from "../../components/layout/LoadingSpinner";
 import { Category } from "../../@types/Categories";
+import AutoDismissAlert from "../../components/layout/Alert";
 
 export const Categories = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalPages, setTotalPages] = useState<number>(0);
 
     const fetchCategories = async () => {
         try {
-            const response = await getCategories(currentPage, 25);
+            const response = await getCategories();
             if (response.data) {
                 setCategories(response.data);
-                setTotalPages(response.headers.totalPages);
             }
         } catch (error) {
             console.error(error);
@@ -40,16 +37,19 @@ export const Categories = () => {
 
     useEffect(() => {
         fetchCategories();
-    }, [currentPage]);
+    }, []);
 
     if (loading) {
-        <LoadingSpinner size={60} color="primary" />
+        return <LoadingSpinner size={60} color="primary" />
     }
 
     if (error) {
-        <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
-            {error}
-        </Alert>
+        if (error) {
+            <AutoDismissAlert
+                type="error"
+                message={error}
+            />
+        }
     }
 
     return (
@@ -61,6 +61,10 @@ export const Categories = () => {
                     { label: 'Categorias' },
                 ]}
             />
+
+             <Typography variant="h3" gutterBottom>
+                Categorias
+            </Typography>
 
             <Box>
                 <TableContainer component={Paper}>
@@ -80,12 +84,6 @@ export const Categories = () => {
                     </Table>
                 </TableContainer>
             </Box>
-
-            <CustomPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={(page) => setCurrentPage(page)}
-            />
         </div>
     );
 };

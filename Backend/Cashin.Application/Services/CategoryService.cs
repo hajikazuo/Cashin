@@ -23,11 +23,10 @@ namespace Cashin.Application.Services
             this.comb = comb;
         }
 
-        public async Task<PagedList<CategoryResponseDto>> GetAll(Guid userId, int pageNumber, int pageSize)
+        public async Task<IEnumerable<CategoryResponseDto>> GetAll(Guid userId)
         {
-            var categories = await repository.GetAll(userId, pageNumber, pageSize);
-            var categoriesDto = mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
-            return new PagedList<CategoryResponseDto>(pageNumber, pageSize, categories.TotalCount, categoriesDto);
+            var categories = await repository.GetAll(userId);
+            return mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
 
         public async Task<CategoryResponseDto> GetById(Guid id)

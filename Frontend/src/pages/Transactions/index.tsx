@@ -12,13 +12,14 @@ import {
     Box,
     TextField,
     Button,
-    Alert,
+    Typography,
 } from "@mui/material";
 import Breadcrumb from "../../components/layout/Breadcrumb";
 import CustomPagination from "../../components/layout/Pagination";
 import { formatDate } from "../../utils/formatDate";
 import { formatValue } from "../../utils/formatValue";
 import LoadingSpinner from "../../components/layout/LoadingSpinner";
+import AutoDismissAlert from "../../components/layout/Alert";
 
 export const Transactions = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -55,13 +56,14 @@ export const Transactions = () => {
     };
 
     if (loading) {
-        <LoadingSpinner size={60} color="primary" />
+        return <LoadingSpinner size={60} color="primary" />
     }
 
     if (error) {
-        <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
-            {error}
-        </Alert>
+        <AutoDismissAlert
+            type="error"
+            message={error}
+        />
     }
 
     return (
@@ -74,28 +76,30 @@ export const Transactions = () => {
                 ]}
             />
 
-            <Box display="flex" mb={2} justifyContent="flex-end">
-                <TextField
-                    label="Data Inicial"
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    sx={{ mr: 2 }}
-                />
-                <TextField
-                    label="Data Final"
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    sx={{ mr: 2 }}
-                />
-                <Button variant="contained" onClick={handleDateFilter}>Aplicar Filtro</Button>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="h3">
+                    Transações
+                </Typography>
+
+                <Box display="flex" alignItems="center" gap={2}>
+                    <TextField
+                        label="Data Inicial"
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        label="Data Final"
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <Button variant="contained" onClick={handleDateFilter}>
+                        Filtrar
+                    </Button>
+                </Box>
             </Box>
 
             <Box>

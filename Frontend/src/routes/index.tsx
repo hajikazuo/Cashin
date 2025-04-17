@@ -5,6 +5,8 @@ import MainLayout from "../components/layout/MainLayout"
 import LayoutLogin from "../components/layout/LayoutLogin"
 import { Transactions } from "../pages/Transactions"
 import { Categories } from "../pages/Categories"
+import { NewTransaction } from "../pages/Transactions/add"
+import { NewCategory } from "../pages/Categories/Add"
 
 export const MainRoutes = () => {
     return (
@@ -32,19 +34,25 @@ export const MainRoutes = () => {
                     element={<Home />}
                 />
 
-                <Route path="/transacoes/list">
-                    <Route
-                        index
-                        element={<Transactions />}
-                    />
-                </Route>
+                <Route
+                    path="/transacoes/list"
+                    element={<Transactions />}
+                />
 
-                <Route path="/categorias/list">
-                    <Route
-                        index
-                        element={<Categories />}
-                    />
-                </Route>
+                <Route
+                    path="/transacoes/add"
+                    element={<NewTransaction />}
+                />
+
+                <Route
+                    path="/categorias/list"
+                    element={<Categories />}
+                />
+
+                <Route
+                    path="/categorias/add"
+                    element={<NewCategory />}
+                />
             </Route>
 
         </Routes >

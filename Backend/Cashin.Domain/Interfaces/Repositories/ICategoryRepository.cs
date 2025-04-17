@@ -10,7 +10,7 @@ namespace Cashin.Domain.Interfaces.Repositories
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
-        Task<PagedList<Category>> GetAll(Guid userId, int pageNumber, int pageSize);
+        Task<IEnumerable<Category>> GetAll(Guid userId);
 
         Task<Category?> GetById(Guid id);
     }

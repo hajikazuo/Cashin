@@ -10,7 +10,7 @@ using System.Security.Claims;
 namespace Cashin.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TransactionController : ControllerBase
     {
