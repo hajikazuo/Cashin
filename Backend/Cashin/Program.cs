@@ -1,3 +1,4 @@
+using Cashin.API.Middlewares;
 using Cashin.Application.Mappings;
 using Cashin.Application.Services;
 using Cashin.Application.Services.Interfaces;
@@ -136,6 +137,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigins");
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
