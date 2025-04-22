@@ -1,8 +1,8 @@
 import { ApiSignUp, ApiSignIn, ApiGetUser } from "../@types/Auth";
-import { ApiGetCategories, CategoryRequest } from "../@types/Categories";
+import { ApiDeleteCategory, ApiGetCategories, ApiGetCategory, ApiUpdateCategory, CategoryRequest } from "../@types/Categories";
 import { ApiGetDashboard } from "../@types/Dashboard";
 import { PaginationHeader } from "../@types/Pagination";
-import { ApiGetTransactions, TransactionRequest } from "../@types/Transaction";
+import { ApiDeleteTransaction, ApiGetTransaction, ApiGetTransactions, ApiUpdateTransaction, TransactionRequest } from "../@types/Transaction";
 import { api } from "./api";
 
 export const signUp = async (name: string, email: string, password: string) => {
@@ -53,19 +53,46 @@ export const getTransactions = async (
   };
 };
 
+export const getTransaction = async (id: string) => {
+  return await api<ApiGetTransaction>({
+      endpoint: `api/transaction/getbyid/${id}`
+  });
+}
+
 export const newTransaction = async (transaction: TransactionRequest) => {
   return await api({
     endpoint: "api/transaction/add",
     method: "POST",
-    data: transaction,
+    data: transaction
   });
 };
+
+export const updateTransaction = async (id: string, transaction: TransactionRequest) => {
+  return await api<ApiUpdateTransaction>({
+      endpoint: `api/transaction/update/${id}`, 
+      method: 'PUT', 
+      data: transaction
+  });
+}
+
+export const deleteTransaction = async (id: string) => {
+  return await api<ApiDeleteTransaction>({
+      endpoint: `api/transaction/delete/${id}`, 
+      method: 'DELETE', 
+  });
+}
 
 export const getCategories = async () => {
   return await api<ApiGetCategories>({
     endpoint: 'api/category/getall',
   });
 };
+
+export const getCategory= async (id: string) => {
+  return await api<ApiGetCategory>({
+      endpoint: `api/category/getbyid/${id}`
+  });
+}
 
 export const newCategory = async (category: CategoryRequest) => {
   return await api({
@@ -74,6 +101,21 @@ export const newCategory = async (category: CategoryRequest) => {
     data: category,
   });
 };
+
+export const updateCategory = async (id: string, category: CategoryRequest) => {
+  return await api<ApiUpdateCategory>({
+      endpoint: `api/category/update/${id}`, 
+      method: 'PUT', 
+      data: category
+  });
+}
+
+export const deleteCategory = async (id: string) => {
+  return await api<ApiDeleteCategory>({
+      endpoint: `api/category/delete/${id}`, 
+      method: 'DELETE', 
+  });
+}
 
 export const getDashboard = async (
   startDate?: string,

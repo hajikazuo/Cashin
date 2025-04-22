@@ -6,7 +6,9 @@ import LayoutLogin from "../components/layout/LayoutLogin"
 import { Transactions } from "../pages/Transactions"
 import { Categories } from "../pages/Categories"
 import { NewTransaction } from "../pages/Transactions/add"
+import { UpdateTransaction } from "../pages/Transactions/update"
 import { NewCategory } from "../pages/Categories/Add"
+import { UpdateCategory } from "../pages/Categories/update"
 
 export const MainRoutes = () => {
     return (
@@ -35,23 +37,33 @@ export const MainRoutes = () => {
                 />
 
                 <Route
-                    path="/transacoes/list"
+                    path="/transacoes/listar"
                     element={<Transactions />}
                 />
 
                 <Route
-                    path="/transacoes/add"
+                    path="/transacoes/adicionar"
                     element={<NewTransaction />}
                 />
 
                 <Route
-                    path="/categorias/list"
+                    path="/transacoes/editar/:id"
+                    element={<UpdateTransaction />}
+                />
+
+                <Route
+                    path="/categorias/listar"
                     element={<Categories />}
                 />
 
                 <Route
-                    path="/categorias/add"
+                    path="/categorias/adicionar"
                     element={<NewCategory />}
+                />
+
+                <Route
+                    path="/categorias/editar/:id"
+                    element={<UpdateCategory />}
                 />
             </Route>
 

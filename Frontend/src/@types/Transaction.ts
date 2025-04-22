@@ -26,6 +26,7 @@ export type Transaction = {
     type: TransactionType;
     status: TransactionStatus;
     paymentType: PaymentType;
+    categoryId: string;
     categoryName: string;
     userName: string;
 }
@@ -43,9 +44,7 @@ export type TransactionRequest = {
 export type ApiGetTransactions = Transaction[];
 
 
-export type ApiGetTransaction = {
-    transaction: Transaction;
-}
+export type ApiGetTransaction = Transaction;
 
 export type ApiNewTransaction = {
     message: string;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getTransactions } from "../../services/requests";
+import { deleteTransaction, getTransactions } from "../../services/requests";
 import { Transaction, TransactionType } from "../../@types/Transaction";
 import {
     Table,
@@ -13,6 +13,7 @@ import {
     TextField,
     Button,
     Typography,
+    IconButton,
 } from "@mui/material";
 import Breadcrumb from "../../components/layout/Breadcrumb";
 import CustomPagination from "../../components/layout/Pagination";
@@ -20,6 +21,10 @@ import { formatDate } from "../../utils/formatDate";
 import { formatValue } from "../../utils/formatValue";
 import LoadingSpinner from "../../components/layout/LoadingSpinner";
 import AutoDismissAlert from "../../components/layout/Alert";
+import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmationModal from "../../components/layout/ConfirmationModal";
 
 export const Transactions = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -29,8 +34,25 @@ export const Transactions = () => {
     const [totalPages, setTotalPages] = useState<number>(0);
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [toDelete, setToDelete] = useState<string | null>(null);
 
-    const fetchTransactions = async () => {
+    const navigate = useNavigate();
+
+    const handleEdit = (id: string) => navigate(`/transacoes/editar/${id}`)
+
+    const handleDelete = async (id: string) => {
+        try {
+            await deleteTransaction(id);
+            setModalOpen(false);
+            handleGetTransactions();
+        } catch (error) {
+            console.error(error);
+            setError('Erro ao deletar');
+        }
+    }
+
+    const handleGetTransactions = async () => {
         try {
             const response = await getTransactions(currentPage, 25, startDate, endDate);
             if (response.data) {
@@ -46,13 +68,13 @@ export const Transactions = () => {
     };
 
     useEffect(() => {
-        fetchTransactions();
+        handleGetTransactions();
     }, [currentPage]);
 
     const handleDateFilter = () => {
         setLoading(true);
         setCurrentPage(1);
-        fetchTransactions();
+        handleGetTransactions();
     };
 
     if (loading) {
@@ -112,6 +134,7 @@ export const Transactions = () => {
                                 <TableCell><strong>Tipo</strong></TableCell>
                                 <TableCell><strong>Data</strong></TableCell>
                                 <TableCell><strong>Categoria</strong></TableCell>
+                                <TableCell><strong>Ações</strong></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -122,6 +145,25 @@ export const Transactions = () => {
                                     <TableCell>{TransactionType[transaction.type]}</TableCell>
                                     <TableCell>{formatDate(new Date(transaction.date).getTime())}</TableCell>
                                     <TableCell>{transaction.categoryName}</TableCell>
+                                    <TableCell>
+                                        <>
+                                            <IconButton
+                                                color="primary"
+                                                onClick={() => handleEdit(transaction.id)}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton
+                                                color="secondary"
+                                                onClick={() => {
+                                                    setToDelete(transaction.id);
+                                                    setModalOpen(true);
+                                                }}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -133,6 +175,13 @@ export const Transactions = () => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={(page) => setCurrentPage(page)}
+            />
+
+            <ConfirmationModal
+                open={modalOpen}
+                message="Tem certeza que deseja excluir esta transação?"
+                onClose={() => setModalOpen(false)}
+                onConfirm={() => toDelete && handleDelete(toDelete)}
             />
         </div>
     );

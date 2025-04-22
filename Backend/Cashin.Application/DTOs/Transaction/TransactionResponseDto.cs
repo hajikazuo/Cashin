@@ -17,7 +17,7 @@ namespace Cashin.Application.DTOs.Transaction
         public TransactionStatus Status { get; set; }
         public PaymentType PaymentType { get; set; }
 
-
+        public Guid CategoryId { get; set; }
         public string CategoryName { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
     }

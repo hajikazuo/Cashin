@@ -22,12 +22,12 @@ const NAVIGATION: Navigation = [
     icon: <PaidIcon />,
     children: [
       {
-        segment: 'list',
+        segment: 'listar',
         title: 'Minhas transações',
         icon: <ListIcon />, 
       },
       {
-        segment: 'add',
+        segment: 'adicionar',
         title: 'Adicionar transação',
         icon: <AddIcon />, 
       }
@@ -39,12 +39,12 @@ const NAVIGATION: Navigation = [
     icon: <CategoryIcon />,
     children: [
       {
-        segment: 'list',
+        segment: 'listar',
         title: 'Categorias',
         icon: <ListIcon />, 
       },
       {
-        segment: 'add',
+        segment: 'adicionar',
         title: 'Adicionar categoria',
         icon: <AddIcon />, 
       }
